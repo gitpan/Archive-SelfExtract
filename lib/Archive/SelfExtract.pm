@@ -34,7 +34,7 @@ use File::Path qw(mkpath rmtree);
 use IO::Scalar;
 use Carp;
 
-our $VERSION = '1.0';
+our $VERSION = '1.1';
 
 # $Tempdir may be set before calling extract() to control where the 
 # zipfile is extracted to.
@@ -70,6 +70,7 @@ sub createExtractor {
   } else {
     $out = \*STDOUT;
   }
+  binmode($out);
   if ( %options ) {
     croak "Unknown options (", join(",",keys %options), ") passed to createExtractor";
   }
@@ -86,6 +87,7 @@ sub createExtractor {
 use warnings;
 use strict;
 use Archive::SelfExtract;
+binmode(\*DATA);
 Archive::SelfExtract::_extract(\*DATA);
 #
 # Start user script
@@ -233,10 +235,8 @@ This was developed for creating single-file installers for application
 distributions.  We needed a platform-independant bootstrapper which
 could get enough of an environment set up for the "real" installer
 (written in Java, as it happens) to run.  Tools such as ActiveState's
-C<PerlEx> allow us to turn a generated self-extracting script into a
-standalone Win32 executable.  Tools such as L<PAR> should make it
-possible to do the same on systems which typically already have Perl
-installed.
+C<PerlApp>, or C<pp> from the PAR distribution, allow us to turn a
+generated self-extracting script into a standalone Win32 executable.
 
 L<Archive::SelfExtract> was conceived of for BIE, the open source
 Business Integration Engine from WDI.  The WDI web site
@@ -254,7 +254,7 @@ archives.
 
 Accomodate C<__END__> in input scripts.
 
-It would be good to support formats other than zip.
+It could be nice to support formats other than zip.
 
 =head1 SEE ALSO
 
@@ -263,9 +263,13 @@ L<mkselfextract>, L<perl>.
 L<Compress::SelfExtracting> shrinks a single program into a compressed
 file which is executable Perl code.
 
+L<PAR> allows packaging modules and scripts into single resources, and
+includes a tool for creating native executables out of those
+resources.
+
 =head1 COPYRIGHT
 
-Copyright 2003 Greg Fast (gdf@speakeasy.net)
+Copyright 2004 Greg Fast (gdf@speakeasy.net)
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

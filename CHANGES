@@ -1,5 +1,11 @@
 Changelog for Archive::SelfExtract
 
+* v1.1 - Fri May 07 2004
+
+ - DATA filehandle should be opened with binmode().  This fixes a
+   corrupted-zipfile-like symptoms under Redhat 8 with its default
+   locale settings (likely Win32 also).
+
 * v1.0 - Mon Mar 22 2004
 
  - initial release
