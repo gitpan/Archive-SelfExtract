@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 use strict;
-use SelfExtract;
+use Archive::SelfExtract;
 
-SelfExtract::createExtractor(@ARGV);
+Archive::SelfExtract::createExtractor(@ARGV);
 
 __END__
 

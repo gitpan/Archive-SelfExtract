@@ -1,5 +1,9 @@
 Changelog for Archive::SelfExtract
 
+* v1.2 - Fri May 07 2004
+
+ - Wrong module name in bin/mkselfextract.  Author feels dumb.
+
 * v1.1 - Fri May 07 2004
 
  - DATA filehandle should be opened with binmode().  This fixes a

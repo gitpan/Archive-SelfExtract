@@ -6,16 +6,16 @@ Archive::SelfExtract - bundle compressed archives with Perl code
 
 =head1 SYNOPSIS
 
-    use SelfExtract;
+    use Archive::SelfExtract;
     
     # writes output script to STDOUT
-    SelfExtract::createExtractor( "perlcode.pl", "somefiles.zip" );
+    Archive::SelfExtract::createExtractor( "perlcode.pl", "somefiles.zip" );
     
     # with various options:
-    SelfExtract::createExtractor( "perlcode.pl", "somefiles.zip",
-                                  perlbin => "/opt/perl58/bin/perl",
-                                  output_fh => $someFileHandle,
-                                );
+    Archive::SelfExtract::createExtractor( "perlcode.pl", "somefiles.zip",
+					   perlbin => "/opt/perl58/bin/perl",
+					   output_fh => $someFileHandle,
+					 );
 
 See also the command line tool, L<mkselfextract>.
 
@@ -34,7 +34,7 @@ use File::Path qw(mkpath rmtree);
 use IO::Scalar;
 use Carp;
 
-our $VERSION = '1.1';
+our $VERSION = '1.2';
 
 # $Tempdir may be set before calling extract() to control where the 
 # zipfile is extracted to.
