@@ -1,0 +1,43 @@
+#!/usr/bin/perl -w
+use strict;
+use SelfExtract;
+
+SelfExtract::createExtractor(@ARGV);
+
+__END__
+
+=pod
+
+=head1 NAME
+
+mkselfextract - Creates a self-extracting perl script.
+
+=head1 SYNOPSIS
+
+    mkselfextract <perlsourcefile> <zipfile>
+
+=head1 DESCRIPTION
+
+C<mkselfextract> combines a file containing Perl code and a compressed
+zip archive into a single file.  This file can be run as a Perl
+program, which as its first action will extract the data in the zip
+file into a temporary directory.
+
+To create such a self-extracting script, you can do something like the
+following:
+
+    % zip -r9 distrib.zip src/ doc/ lib/ bin/
+    % mkselfextract setup-script.pl distrib.zip > setup.pl
+
+=head1 SEE ALSO
+
+L<Archive::SelfExtract>, L<perl>.
+
+=head1 COPYRIGHT
+
+Copyright 2004 Greg Fast (gdf@speakeasy.net)
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+ 
+=cut
