@@ -34,7 +34,7 @@ use File::Path qw(mkpath rmtree);
 use IO::Scalar;
 use Carp;
 
-our $VERSION = '1.2';
+our $VERSION = '1.3';
 
 # $Tempdir may be set before calling extract() to control where the 
 # zipfile is extracted to.
@@ -70,7 +70,6 @@ sub createExtractor {
   } else {
     $out = \*STDOUT;
   }
-  binmode($out);
   if ( %options ) {
     croak "Unknown options (", join(",",keys %options), ") passed to createExtractor";
   }
@@ -83,26 +82,23 @@ sub createExtractor {
   local $/=undef;
 
   print $out "#!$ {perlbin}\n";
-  print $out q{
-use warnings;
-use strict;
-use Archive::SelfExtract;
-binmode(\*DATA);
-Archive::SelfExtract::_extract(\*DATA);
-#
-# Start user script
-#
-};
-
+  print $out "\n";
+  print $out q{use warnings;}, "\n";
+  print $out q{use strict;}, "\n";
+  print $out q{use Archive::SelfExtract;}, "\n";
+  print $out q{Archive::SelfExtract::_extract(\*DATA);}, "\n";
+  print $out q{#}, "\n";
+  print $out q{# Start user script}, "\n";
+  print $out q{#}, "\n";
+  print $out "\n";
   print $out +<$script>;
-
-  print $out q{
-#
-# End user script
-#
-};
-  print $out "__DATA__\n";
-
+  print $out "\n";
+  print $out q{#}, "\n";
+  print $out q{# End user script}, "\n";
+  print $out q{#}, "\n";
+  print $out q{__DATA__}, "\n";
+  # turn binmode on now: print raw data instead of text
+  binmode($out);
   print $out scalar(<$zipdata>);
 
 }
@@ -122,6 +118,7 @@ sub _extract {
   out(DEBUG, "Reading from DATA into memory");
   my $data = do {
     local $/ = undef;
+    binmode($fh);
     <$fh>;
   };
   # The alternative to this is to write a fh wrapper which
@@ -254,7 +251,12 @@ archives.
 
 Accomodate C<__END__> in input scripts.
 
-It could be nice to support formats other than zip.
+Use the "eval exec" trick instead of fretting over the shebang line.
+
+Perhaps: allow zip to be attached as Base64 data, rather than as raw.
+
+Perhaps: support formats other than zip.
+
 
 =head1 SEE ALSO
 
